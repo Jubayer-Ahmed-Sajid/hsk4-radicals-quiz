@@ -3,577 +3,467 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HSK-4 Radicals Quiz</title>
+<title>HSK-4 Quiz — Radicals & Essential Words</title>
 <style>
 :root {
-  --bg: #0a0a0f;
-  --surface: #14141f;
-  --surface2: #1e1e2e;
-  --border: #2a2a3e;
-  --text: #e8e8f0;
-  --text2: #8888a0;
-  --accent: #6c5ce7;
-  --accent2: #a29bfe;
-  --green: #00b894;
-  --red: #e17055;
-  --orange: #fdcb6e;
-  --correct: #00b894;
-  --wrong: #e17055;
+  --bg: #08080e;
+  --surface: #111120;
+  --surface2: #1a1a2e;
+  --surface3: #222240;
+  --border: #2a2a44;
+  --border-hover: #3d3d5c;
+  --text: #eeeef6;
+  --text2: #9090aa;
+  --text3: #606078;
+  --accent: #7c6cf0;
+  --accent2: #a8a0ff;
+  --accent-glow: rgba(124,108,240,0.15);
+  --green: #34d399;
+  --green-bg: rgba(52,211,153,0.1);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.1);
+  --orange: #fbbf24;
+  --orange-bg: rgba(251,191,36,0.1);
+  --cyan: #22d3ee;
+  --pink: #f472b6;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Animated background */
+/* Ambient glow */
 body::before {
-  content: '';
-  position: fixed;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: radial-gradient(ellipse at 30% 20%, rgba(108,92,231,0.08) 0%, transparent 50%),
-              radial-gradient(ellipse at 70% 80%, rgba(162,155,254,0.06) 0%, transparent 50%);
-  animation: bgShift 20s ease-in-out infinite alternate;
-  z-index: -1;
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(124,108,240,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(168,160,255,0.05) 0%, transparent 60%);
+  pointer-events:none;
+  z-index:-1;
 }
 
-@keyframes bgShift {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-5%, -3%); }
-}
+.container { max-width:860px; margin:0 auto; padding:20px 24px; }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Header */
-.header {
-  text-align: center;
-  padding: 40px 0 30px;
-}
-
+/* ===== HEADER ===== */
+.header { text-align:center; padding:48px 0 20px; }
 .header h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 6px;
+  font-size:2.4rem; font-weight:800; letter-spacing:-0.02em;
+  background:linear-gradient(135deg, var(--accent), var(--cyan), var(--accent2));
+  background-size:200% 200%;
+  animation: gradientShift 6s ease infinite;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+@keyframes gradientShift {
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+.header p { color:var(--text2); font-size:0.95rem; margin-top:4px; }
+
+/* ===== MODE TABS ===== */
+.mode-tabs {
+  display:flex; gap:4px;
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:4px; margin:28px 0 0;
+}
+.mode-tab {
+  flex:1; padding:12px 16px; border:none; border-radius:var(--radius-sm);
+  font-size:0.92rem; font-weight:600; cursor:pointer;
+  background:transparent; color:var(--text2); transition:var(--transition);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.mode-tab:hover { color:var(--text); background:var(--surface2); }
+.mode-tab.active {
+  background:var(--accent); color:#fff;
+  box-shadow:0 2px 12px rgba(124,108,240,0.3);
 }
 
-.header p {
-  color: var(--text2);
-  font-size: 0.95rem;
+/* ===== QUIZ COUNT SELECTOR ===== */
+.quiz-count-bar {
+  display:flex; align-items:center; gap:12px; justify-content:center;
+  margin:20px 0 4px; flex-wrap:wrap;
+}
+.quiz-count-bar label {
+  font-size:0.88rem; color:var(--text2); font-weight:500;
+}
+.count-chips {
+  display:flex; gap:6px;
+}
+.count-chip {
+  padding:6px 14px; border:1px solid var(--border); border-radius:8px;
+  background:var(--surface); color:var(--text2); font-size:0.85rem; font-weight:500;
+  cursor:pointer; transition:var(--transition);
+}
+.count-chip:hover { border-color:var(--accent); color:var(--text); }
+.count-chip.active {
+  background:var(--accent); color:#fff; border-color:var(--accent);
+  box-shadow:0 2px 8px rgba(124,108,240,0.25);
 }
 
-/* Section cards */
+/* ===== SECTION LABEL ===== */
+.section-label {
+  display:flex; align-items:center; gap:8px;
+  margin:24px 0 10px; font-size:0.78rem; color:var(--text3);
+  text-transform:uppercase; letter-spacing:1.5px; font-weight:600;
+}
+.section-label::after {
+  content:''; flex:1; height:1px; background:var(--border);
+}
+
+/* ===== SECTION CARDS ===== */
 .sections-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  margin: 24px 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+  gap:12px; margin-bottom:24px;
 }
-
 .section-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  cursor:pointer;
+  transition:all var(--transition);
+  position:relative;
+  overflow:hidden;
 }
-
-.section-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px; height: 100%;
-  background: var(--accent);
-  opacity: 0;
-  transition: opacity 0.25s;
+.section-card::after {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:100%; height:3px;
+  background:linear-gradient(90deg, var(--accent), var(--cyan));
+  opacity:0; transition:opacity var(--transition);
 }
-
 .section-card:hover {
-  border-color: var(--accent);
-  background: var(--surface2);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(108,92,231,0.15);
+  border-color:var(--accent);
+  background:var(--surface2);
+  transform:translateY(-3px);
+  box-shadow:0 8px 32px rgba(124,108,240,0.12);
+}
+.section-card:hover::after { opacity:1; }
+
+.section-card .s-num {
+  font-size:0.72rem; color:var(--accent2); font-weight:700;
+  text-transform:uppercase; letter-spacing:1.2px; margin-bottom:4px;
+}
+.section-card .s-title {
+  font-size:1.05rem; font-weight:600; margin-bottom:2px;
+}
+.section-card .s-count {
+  font-size:0.82rem; color:var(--text2);
+}
+.section-card .s-quiz {
+  font-size:0.78rem; color:var(--accent2); margin-top:8px; opacity:0.85;
+  display:flex; align-items:center; gap:4px;
 }
 
-.section-card:hover::before { opacity: 1; }
-
-.section-card .section-num {
-  font-size: 0.75rem;
-  color: var(--accent2);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
+/* ===== RANGE SELECTOR ===== */
+.range-box {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px; margin-bottom:24px;
 }
-
-.section-card .section-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 4px;
+.range-box h3 {
+  font-size:1.05rem; font-weight:600; margin-bottom:16px;
+  display:flex; align-items:center; gap:8px;
 }
-
-.section-card .section-count {
-  font-size: 0.85rem;
-  color: var(--text2);
-}
-
-.section-card .quiz-info {
-  font-size: 0.78rem;
-  color: var(--accent2);
-  margin-top: 6px;
-  opacity: 0.8;
-}
-
-/* Range selector */
-.range-selector {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-  margin: 24px 0;
-}
-
-.range-selector h3 {
-  font-size: 1.1rem;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.range-selector h3 span {
-  font-size: 1.3rem;
-}
-
 .range-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
 }
-
-.range-row label {
-  color: var(--text2);
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
+.range-row label { color:var(--text2); font-size:0.88rem; font-weight:500; }
 .range-row select {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  min-width: 180px;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238888a0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
+  background:var(--surface2); border:1px solid var(--border); color:var(--text);
+  padding:10px 36px 10px 14px; border-radius:8px; font-size:0.9rem; cursor:pointer;
+  min-width:200px; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239090aa' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 12px center;
 }
-
-.range-row select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
+.range-row select:focus { outline:none; border-color:var(--accent); }
 
 .range-info {
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: rgba(108,92,231,0.1);
-  border-radius: 8px;
-  font-size: 0.88rem;
-  color: var(--accent2);
-  display: none;
+  margin-top:14px; padding:12px 16px; border-radius:8px;
+  font-size:0.88rem; background:var(--accent-glow); color:var(--accent2);
+  display:none;
 }
+.range-info.visible { display:block; }
 
-.range-info.visible { display: block; }
-
+/* ===== BUTTONS ===== */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 28px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 24px; border:none; border-radius:var(--radius-sm);
+  font-size:0.95rem; font-weight:600; cursor:pointer; transition:all var(--transition);
 }
-
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent), #7c6cf0);
-  color: white;
-  box-shadow: 0 4px 16px rgba(108,92,231,0.3);
+  background:linear-gradient(135deg,var(--accent),#6c5ce7);
+  color:#fff; box-shadow:0 4px 16px rgba(124,108,240,0.25);
 }
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(108,92,231,0.4);
-}
-
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(124,108,240,0.35); }
 .btn-secondary {
-  background: var(--surface2);
-  color: var(--text);
-  border: 1px solid var(--border);
+  background:var(--surface2); color:var(--text); border:1px solid var(--border);
 }
-
-.btn-secondary:hover {
-  border-color: var(--accent);
-  background: rgba(108,92,231,0.1);
-}
-
+.btn-secondary:hover { border-color:var(--accent); background:var(--accent-glow); }
 .btn-green {
-  background: linear-gradient(135deg, var(--green), #00d2a0);
-  color: white;
+  background:linear-gradient(135deg,var(--green),#2dd4bf);
+  color:#fff; box-shadow:0 4px 16px rgba(52,211,153,0.25);
 }
+.btn-green:hover { transform:translateY(-2px); }
 
-.btn-start {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  padding: 16px;
-  font-size: 1.1rem;
+.btn-start { display:block; width:100%; margin-top:16px; padding:15px; font-size:1.05rem; }
+
+/* ===== QUIZ AREA ===== */
+.quiz-area { display:none; }
+
+.progress-wrap {
+  display:flex; align-items:center; gap:12px; margin:20px 0 12px;
 }
-
-/* Quiz area */
-.quiz-area { display: none; }
-
 .progress-bar {
-  background: var(--surface);
-  border-radius: 10px;
-  height: 8px;
-  margin: 20px 0 16px;
-  overflow: hidden;
+  flex:1; background:var(--surface2); border-radius:8px; height:6px; overflow:hidden;
 }
-
 .progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border-radius: 10px;
-  transition: width 0.4s ease;
+  height:100%; background:linear-gradient(90deg,var(--accent),var(--cyan));
+  border-radius:8px; transition:width 0.4s ease;
 }
+.progress-text { font-size:0.82rem; color:var(--text3); font-weight:500; min-width:40px; text-align:right; }
 
-.quiz-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 8px;
+.quiz-top {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:16px; flex-wrap:wrap; gap:8px;
 }
-
-.quiz-counter {
-  font-size: 0.9rem;
-  color: var(--text2);
-}
-
-.quiz-score {
-  font-size: 0.9rem;
-  color: var(--accent2);
-  font-weight: 600;
-}
+.quiz-counter { font-size:0.88rem; color:var(--text2); }
+.quiz-score { font-size:0.88rem; color:var(--accent2); font-weight:600; }
 
 .question-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 32px;
-  margin-bottom: 20px;
-  text-align: center;
-  animation: fadeIn 0.3s ease;
+  background:var(--surface); border:1px solid var(--border); border-radius:calc(var(--radius) + 4px);
+  padding:36px 32px; margin-bottom:16px; text-align:center;
+  animation:slideIn 0.35s ease;
+  position:relative; overflow:hidden;
 }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.question-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,var(--accent),var(--cyan),var(--pink));
+  border-radius:4px 4px 0 0;
+}
+@keyframes slideIn {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
 }
 
 .question-type {
-  font-size: 0.8rem;
-  color: var(--accent2);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-  margin-bottom: 12px;
+  font-size:0.78rem; color:var(--accent2); text-transform:uppercase;
+  letter-spacing:1.2px; font-weight:700; margin-bottom:10px;
 }
-
-.question-char {
-  font-size: 4rem;
-  font-weight: 300;
-  margin: 10px 0;
-  line-height: 1.2;
+.question-prompt {
+  font-size:3.8rem; font-weight:300; margin:8px 0; line-height:1.2;
 }
-
-.question-hint {
-  font-size: 1rem;
-  color: var(--text2);
-  margin-top: 6px;
-}
+.question-prompt.small { font-size:2.2rem; font-weight:500; }
+.question-hint { font-size:0.95rem; color:var(--text2); margin-top:4px; }
 
 .options-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 24px;
+  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:28px;
 }
-
 .option-btn {
-  background: var(--surface2);
-  border: 2px solid var(--border);
-  color: var(--text);
-  padding: 16px 12px;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-  font-weight: 500;
+  background:var(--surface2); border:2px solid var(--border); color:var(--text);
+  padding:14px 12px; border-radius:var(--radius-sm); font-size:1rem;
+  cursor:pointer; transition:all var(--transition); text-align:center; font-weight:500;
 }
-
 .option-btn:hover:not(.disabled) {
-  border-color: var(--accent);
-  background: rgba(108,92,231,0.08);
+  border-color:var(--accent); background:var(--accent-glow);
+  transform:scale(1.02);
 }
-
 .option-btn.correct {
-  border-color: var(--correct);
-  background: rgba(0,184,148,0.12);
-  color: var(--correct);
+  border-color:var(--green)!important; background:var(--green-bg)!important; color:var(--green)!important;
+  animation:popCorrect 0.3s ease;
 }
-
+@keyframes popCorrect {
+  0%{transform:scale(1)} 50%{transform:scale(1.05)} 100%{transform:scale(1)}
+}
 .option-btn.wrong {
-  border-color: var(--wrong);
-  background: rgba(225,112,85,0.12);
-  color: var(--wrong);
+  border-color:var(--red)!important; background:var(--red-bg)!important; color:var(--red)!important;
+  animation:shakeWrong 0.4s ease;
 }
-
-.option-btn.disabled {
-  cursor: default;
-  opacity: 0.7;
+@keyframes shakeWrong {
+  0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)}
 }
-
-.option-btn .option-label {
-  font-size: 0.75rem;
-  color: var(--text2);
-  display: block;
-  margin-bottom: 2px;
+.option-btn.disabled { cursor:default; opacity:0.65; }
+.option-btn .opt-label {
+  font-size:0.72rem; color:var(--text3); display:block; margin-bottom:2px; font-weight:600;
 }
 
 /* Feedback */
 .feedback {
-  text-align: center;
-  padding: 16px;
-  border-radius: 10px;
-  margin: 16px 0;
-  font-weight: 600;
-  font-size: 1.05rem;
-  animation: fadeIn 0.3s ease;
+  text-align:center; padding:14px; border-radius:var(--radius-sm);
+  margin:12px 0; font-weight:600; font-size:1rem; animation:slideIn 0.3s ease;
 }
+.feedback.correct { background:var(--green-bg); color:var(--green); border:1px solid rgba(52,211,153,0.25); }
+.feedback.wrong { background:var(--red-bg); color:var(--red); border:1px solid rgba(248,113,113,0.25); }
+.feedback .fb-detail { font-size:0.84rem; font-weight:400; color:var(--text2); margin-top:4px; }
 
-.feedback.correct {
-  background: rgba(0,184,148,0.1);
-  color: var(--correct);
-  border: 1px solid rgba(0,184,148,0.3);
-}
-
-.feedback.wrong {
-  background: rgba(225,112,85,0.1);
-  color: var(--wrong);
-  border: 1px solid rgba(225,112,85,0.3);
-}
-
-.feedback .correct-answer {
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: var(--text2);
-  margin-top: 4px;
-}
-
-/* Results */
-.results-area { display: none; text-align: center; }
-
+/* ===== RESULTS ===== */
+.results-area { display:none; }
 .results-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 40px 32px;
-  margin: 30px 0;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:calc(var(--radius) + 4px); padding:44px 36px; margin:24px 0;
+  text-align:center; position:relative; overflow:hidden;
 }
-
-.results-score {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin: 16px 0;
-  line-height: 1;
+.results-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
 }
-
-.results-score.great { color: var(--green); }
-.results-score.ok { color: var(--orange); }
-.results-score.bad { color: var(--red); }
-
-.results-detail {
-  color: var(--text2);
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
+.results-subtitle { font-size:1rem; color:var(--text2); margin-bottom:4px; }
+.results-score { font-size:4rem; font-weight:800; line-height:1; margin:12px 0; }
+.results-score.great { color:var(--green); }
+.results-score.ok { color:var(--orange); }
+.results-score.bad { color:var(--red); }
+.results-detail { color:var(--text2); font-size:0.95rem; }
 
 .results-bar {
-  width: 100%;
-  max-width: 300px;
-  height: 10px;
-  background: var(--surface2);
-  border-radius: 10px;
-  margin: 20px auto;
-  overflow: hidden;
+  width:100%; max-width:320px; height:8px;
+  background:var(--surface3); border-radius:8px; margin:20px auto; overflow:hidden;
 }
+.results-bar-fill { height:100%; border-radius:8px; transition:width 1s ease; }
 
-.results-bar-fill {
-  height: 100%;
-  border-radius: 10px;
-  transition: width 1s ease;
-}
+/* Confetti placeholder */
+.results-emoji { font-size:3rem; margin-bottom:12px; }
 
-.wrong-answers {
-  margin-top: 28px;
-  text-align: left;
-}
-
+.wrong-answers { margin-top:28px; text-align:left; }
 .wrong-answers h4 {
-  font-size: 1rem;
-  color: var(--red);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size:0.95rem; color:var(--red); margin-bottom:12px;
+  display:flex; align-items:center; gap:6px; font-weight:600;
 }
-
 .wrong-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  background: rgba(225,112,85,0.06);
-  border: 1px solid rgba(225,112,85,0.15);
-  border-radius: 8px;
-  margin-bottom: 8px;
+  display:flex; align-items:center; gap:14px;
+  padding:10px 16px; background:var(--red-bg); border:1px solid rgba(248,113,113,0.12);
+  border-radius:8px; margin-bottom:8px;
 }
+.wrong-item .wi-char { font-size:1.6rem; min-width:44px; text-align:center; }
+.wrong-item .wi-info { font-size:0.88rem; }
+.wrong-item .wi-pinyin { color:var(--accent2); }
+.wrong-item .wi-meaning { color:var(--text2); }
 
-.wrong-item .wi-char {
-  font-size: 1.5rem;
-  min-width: 40px;
-  text-align: center;
-}
+.btn-row { display:flex; gap:12px; justify-content:center; margin-top:28px; flex-wrap:wrap; }
 
-.wrong-item .wi-info {
-  font-size: 0.88rem;
-}
-
-.wrong-item .wi-pinyin {
-  color: var(--accent2);
-}
-
-.wrong-item .wi-meaning {
-  color: var(--text2);
-}
-
-.btn-row {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 24px;
-  flex-wrap: wrap;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .header h1 { font-size: 1.6rem; }
-  .sections-grid { grid-template-columns: 1fr; }
-  .options-grid { grid-template-columns: 1fr; }
-  .question-char { font-size: 3rem; }
-  .container { padding: 14px; }
-  .question-card { padding: 24px 16px; }
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px) {
+  .header h1 { font-size:1.7rem; }
+  .sections-grid { grid-template-columns:1fr; }
+  .options-grid { grid-template-columns:1fr; }
+  .question-prompt { font-size:2.8rem; }
+  .question-prompt.small { font-size:1.6rem; }
+  .container { padding:14px 16px; }
+  .question-card { padding:28px 20px; }
+  .results-card { padding:32px 20px; }
+  .mode-tabs { flex-direction:column; }
+  .range-row { flex-direction:column; align-items:stretch; }
+  .range-row label { margin-top:6px; }
+  .quiz-count-bar { flex-direction:column; }
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--border-hover); }
 </style>
 </head>
 <body>
-
 <div class="container">
-  <!-- MENU SCREEN -->
+
+  <!-- ===== MENU ===== -->
   <div id="menuScreen">
     <div class="header">
-      <h1>🇨🇳 HSK-4 Radicals Quiz</h1>
-      <p>100 Essential Radicals — Unique quizzes every time</p>
+      <h1>🇨🇳 HSK-4 Quiz</h1>
+      <p>Radicals & Essential Words — Unique quizzes every time</p>
     </div>
 
-    <h3 style="margin-bottom:4px; font-size:0.9rem; color:var(--text2); text-transform:uppercase; letter-spacing:1px;">Choose a Section</h3>
-    <div class="sections-grid" id="sectionsGrid"></div>
+    <!-- Mode Tabs -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" onclick="switchMode('radicals')" id="tabRadicals">
+        <span>✏️</span> Radicals
+      </button>
+      <button class="mode-tab" onclick="switchMode('words')" id="tabWords">
+        <span>📖</span> Essential Words
+      </button>
+    </div>
 
-    <div class="range-selector">
-      <h3><span>📊</span> Choose a Range</h3>
-      <div class="range-row">
-        <label>From</label>
-        <select id="rangeFrom"></select>
-        <label>To</label>
-        <select id="rangeTo"></select>
-        <button class="btn btn-primary" onclick="startRangeQuiz()" style="padding:10px 20px; font-size:0.9rem;">Start</button>
+    <!-- Quiz Count Selector -->
+    <div class="quiz-count-bar">
+      <label>Quizzes per session:</label>
+      <div class="count-chips" id="countChips"></div>
+    </div>
+
+    <!-- Radicals Sections -->
+    <div id="radicalsPanel">
+      <div class="section-label">Choose a Section</div>
+      <div class="sections-grid" id="radicalsGrid"></div>
+      <div class="range-box">
+        <h3>📊 Choose a Range</h3>
+        <div class="range-row">
+          <label>From</label>
+          <select id="rangeFrom"></select>
+          <label>To</label>
+          <select id="rangeTo"></select>
+          <button class="btn btn-primary" onclick="startRangeQuiz('radicals')" style="padding:10px 20px;font-size:0.9rem;">Start</button>
+        </div>
+        <div class="range-info" id="rangeInfo"></div>
       </div>
-      <div class="range-info" id="rangeInfo"></div>
+    </div>
+
+    <!-- Words Sections -->
+    <div id="wordsPanel" style="display:none">
+      <div class="section-label">Choose a Word Group</div>
+      <div class="sections-grid" id="wordsGrid"></div>
+      <div class="range-box">
+        <h3>📊 Choose a Range</h3>
+        <div class="range-row">
+          <label>From</label>
+          <select id="wordsRangeFrom"></select>
+          <label>To</label>
+          <select id="wordsRangeTo"></select>
+          <button class="btn btn-primary" onclick="startRangeQuiz('words')" style="padding:10px 20px;font-size:0.9rem;">Start</button>
+        </div>
+        <div class="range-info" id="wordsRangeInfo"></div>
+      </div>
     </div>
   </div>
 
-  <!-- QUIZ SCREEN -->
+  <!-- ===== QUIZ ===== -->
   <div class="quiz-area" id="quizArea">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">0%</span>
     </div>
-    <div class="quiz-header">
+    <div class="quiz-top">
       <span class="quiz-counter" id="quizCounter"></span>
       <span class="quiz-score" id="quizScore"></span>
     </div>
     <div class="question-card" id="questionCard">
       <div class="question-type" id="questionType"></div>
-      <div class="question-char" id="questionChar"></div>
+      <div class="question-prompt" id="questionPrompt"></div>
       <div class="question-hint" id="questionHint"></div>
       <div class="options-grid" id="optionsGrid"></div>
     </div>
     <div id="feedbackArea"></div>
   </div>
 
-  <!-- RESULTS SCREEN -->
+  <!-- ===== RESULTS ===== -->
   <div class="results-area" id="resultsArea">
     <div class="results-card">
-      <div style="font-size:1.1rem; color:var(--text2);">Quiz Complete!</div>
+      <div class="results-emoji" id="resultsEmoji"></div>
+      <div class="results-subtitle">Quiz Complete!</div>
       <div class="results-score" id="resultsScore"></div>
       <div class="results-detail" id="resultsDetail"></div>
-      <div class="results-bar">
-        <div class="results-bar-fill" id="resultsBarFill"></div>
-      </div>
+      <div class="results-bar"><div class="results-bar-fill" id="resultsBarFill"></div></div>
       <div class="wrong-answers" id="wrongAnswers"></div>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="newQuiz()">🔄 New Quiz</button>
@@ -581,473 +471,595 @@ body::before {
       </div>
     </div>
   </div>
+
 </div>
 
 <script>
-// ===== DATA =====
-const SECTIONS = [
-  {
-    id: 1, title: "Human & Body", radicals: [
-      {char:"人",pinyin:"rén",meaning:"Person",examples:"他/她/你们/做/住/位"},
-      {char:"女",pinyin:"nǚ",meaning:"Woman",examples:"她/好/妈/姐/妹"},
-      {char:"子",pinyin:"zǐ",meaning:"Child",examples:"学/字/孩/孙/好"},
-      {char:"口",pinyin:"kǒu",meaning:"Mouth",examples:"吃/嗯/唱/听/叫/吗/吧"},
-      {char:"耳",pinyin:"ěr",meaning:"Ear",examples:"听/闻/联/聪"},
-      {char:"目",pinyin:"mù",meaning:"Eye",examples:"看/眼/晴/相/直"},
-      {char:"心",pinyin:"xīn",meaning:"Heart",examples:"想/感/情/快/慢/忙"},
-      {char:"手",pinyin:"shǒu",meaning:"Hand",examples:"打/扎/把/拉/推/拿"},
-      {char:"足",pinyin:"zú",meaning:"Foot",examples:"跑/跳/路/跟/踢"},
-      {char:"力",pinyin:"lì",meaning:"Strength",examples:"劝/助/办/加/力"},
-      {char:"页",pinyin:"yè",meaning:"Page / Head",examples:"题/颜/预"}
-    ]
-  },
-  {
-    id: 2, title: "Nature & Elements", radicals: [
-      {char:"水",pinyin:"shuǐ",meaning:"Water",examples:"河/海/洗/游/酒/没"},
-      {char:"火",pinyin:"huǒ",meaning:"Fire",examples:"热/煮/烤/点/照/灯"},
-      {char:"木",pinyin:"mù",meaning:"Wood",examples:"林/树/桌/椅/板/杯"},
-      {char:"金",pinyin:"jīn",meaning:"Metal",examples:"银/钱/钟/铁/铅"},
-      {char:"土",pinyin:"tǔ",meaning:"Earth",examples:"地/坐/在/场/城"},
-      {char:"石",pinyin:"shí",meaning:"Stone",examples:"研/确/碰/砸"},
-      {char:"日",pinyin:"rì",meaning:"Sun",examples:"早/明/时/晚/晴"},
-      {char:"月",pinyin:"yuè",meaning:"Moon / Month",examples:"期/明/朝/有/朋"},
-      {char:"山",pinyin:"shān",meaning:"Mountain",examples:"出/岁/岛/岸"},
-      {char:"田",pinyin:"tián",meaning:"Field",examples:"男/思/留/界"},
-      {char:"雨",pinyin:"yǔ",meaning:"Rain",examples:"雪/零/需/电"},
-      {char:"草",pinyin:"cǎo",meaning:"Grass",examples:"花/茶/英/药/草"},
-      {char:"竹",pinyin:"zhú",meaning:"Bamboo",examples:"笑/笔/等/箔/箱"},
-      {char:"米",pinyin:"mǐ",meaning:"Rice",examples:"精/糖/粮/粉"},
-      {char:"禾",pinyin:"hé",meaning:"Grain",examples:"种/和/科/利"},
-      {char:"穴",pinyin:"xué",meaning:"Cave",examples:"空/窟/穷/穿"},
-      {char:"风",pinyin:"fēng",meaning:"Wind",examples:"飞/风"},
-      {char:"气",pinyin:"qì",meaning:"Air",examples:"汽/氧/氯"}
-    ]
-  },
-  {
-    id: 3, title: "Actions & Movement", radicals: [
-      {char:"走",pinyin:"zǒu",meaning:"Walk",examples:"起/超/越/赶"},
-      {char:"辶",pinyin:"chuò",meaning:"Walk / Movement",examples:"过/还/进/远/近/边"},
-      {char:"讠",pinyin:"yán",meaning:"Speak",examples:"说/话/读/请/语/讲"},
-      {char:"饣",pinyin:"shí",meaning:"Food / Eat",examples:"饭/饿/饱/饮/馆"},
-      {char:"见",pinyin:"jiàn",meaning:"See",examples:"观/视/现/觉"},
-      {char:"车",pinyin:"chē",meaning:"Vehicle",examples:"转/轻/较/辆/输"},
-      {char:"刀",pinyin:"dāo",meaning:"Knife / Cut",examples:"切/分/到/刚"},
-      {char:"弓",pinyin:"gōng",meaning:"Bow",examples:"引/强/张"},
-      {char:"舟",pinyin:"zhōu",meaning:"Boat",examples:"船/航/般"},
-      {char:"止",pinyin:"zhǐ",meaning:"Stop",examples:"正/步/此/武"},
-      {char:"飞",pinyin:"fēi",meaning:"Fly",examples:"飞/风/凤"},
-      {char:"彳",pinyin:"chì",meaning:"Go",examples:"行/街/住/很"},
-      {char:"文",pinyin:"wén",meaning:"Action / Tap",examples:"做/教/放/散"},
-      {char:"殳",pinyin:"shū",meaning:"Weapon",examples:"段/肢/般"}
-    ]
-  },
-  {
-    id: 4, title: "Objects & Places", radicals: [
-      {char:"宀",pinyin:"mián",meaning:"Roof / Home",examples:"家/安/完/室/字/客"},
-      {char:"门",pinyin:"mén",meaning:"Door",examples:"问/开/关/闻"},
-      {char:"户",pinyin:"hù",meaning:"Household",examples:"房/所/后"},
-      {char:"广",pinyin:"guǎng",meaning:"Building",examples:"店/府/座/庭"},
-      {char:"囗",pinyin:"wéi",meaning:"Enclosure",examples:"国/团/园"},
-      {char:"衣",pinyin:"yī",meaning:"Clothes",examples:"被/裤/衬/衫"},
-      {char:"巾",pinyin:"jīn",meaning:"Cloth",examples:"师/希/常/带"},
-      {char:"贝",pinyin:"bèi",meaning:"Money / Shells",examples:"贯/费/质/贷"},
-      {char:"瓦",pinyin:"wǎ",meaning:"Tile",examples:"瓶/瓷"},
-      {char:"王",pinyin:"wáng",meaning:"Jade / King",examples:"理/玩/珠/珍"},
-      {char:"玉",pinyin:"yù",meaning:"Jade",examples:"国/宝/全"},
-      {char:"皿",pinyin:"mǐn",meaning:"Dish",examples:"盘/盒/盖/盐"},
-      {char:"礻",pinyin:"shì",meaning:"Spirit / Show",examples:"社/神/祝/描"},
-      {char:"戈",pinyin:"gē",meaning:"Weapon",examples:"成/我/战"},
-      {char:"斤",pinyin:"jīn",meaning:"Axe",examples:"新/听/近/斩"},
-      {char:"匕",pinyin:"bǐ",meaning:"Spoon",examples:"北/比/死"},
-      {char:"厂",pinyin:"hǎn",meaning:"Cliff",examples:"原/压/厚"},
-      {char:"几",pinyin:"jǐ",meaning:"Table",examples:"机/朵/风"}
-    ]
-  },
-  {
-    id: 5, title: "Shapes & Numbers", radicals: [
-      {char:"一",pinyin:"yī",meaning:"One",examples:"三/王/主/再"},
-      {char:"二",pinyin:"èr",meaning:"Two",examples:"些/次/亚"},
-      {char:"十",pinyin:"shí",meaning:"Ten",examples:"千/午/半/早"},
-      {char:"又",pinyin:"yòu",meaning:"Right hand",examples:"对/友/受/双"},
-      {char:"寸",pinyin:"cùn",meaning:"Inch",examples:"对/过/时/村"},
-      {char:"工",pinyin:"gōng",meaning:"Work",examples:"左/功/空/式"},
-      {char:"大",pinyin:"dà",meaning:"Big",examples:"天/太/夫/美"},
-      {char:"小",pinyin:"xiǎo",meaning:"Small",examples:"少/尖/尘"},
-      {char:"冂",pinyin:"jiōng",meaning:"Border",examples:"同/朋/内/再"},
-      {char:"冖",pinyin:"mì",meaning:"Cover",examples:"写/军/冠"},
-      {char:"八",pinyin:"bā",meaning:"Divide",examples:"前/关/兰/并"},
-      {char:"卜",pinyin:"tǔ",meaning:"Lid",examples:"亡/京/亩/交"},
-      {char:"幺",pinyin:"yāo",meaning:"Tiny",examples:"幻/幼/幽"},
-      {char:"己",pinyin:"jǐ",meaning:"Self",examples:"导/包/异"},
-      {char:"角",pinyin:"jiǎo",meaning:"Horn",examples:"色/争/免"},
-      {char:"厂",pinyin:"hǎn",meaning:"Cliff",examples:"反/后/质"},
-      {char:"勹",pinyin:"bāo",meaning:"Wrap",examples:"包/够/句"}
-    ]
-  },
-  {
-    id: 6, title: "Supplementary", radicals: [
-      {char:"立",pinyin:"lì",meaning:"Stand",examples:"位/产/童/竟"},
-      {char:"长",pinyin:"cháng",meaning:"Long",examples:"张/帐/涨"},
-      {char:"阝",pinyin:"fǔ",meaning:"Mound / City",examples:"部/防/阳/阵"},
-      {char:"氵",pinyin:"shuǐ",meaning:"Water (radical)",examples:"河/海/洗/游"},
-      {char:"灬",pinyin:"huǒ",meaning:"Fire (radical)",examples:"然/照/煮/焦"},
-      {char:"扌",pinyin:"shǒu",meaning:"Hand (radical)",examples:"打/拉/推/拿"},
-      {char:"忄",pinyin:"xīn",meaning:"Heart (radical)",examples:"情/快/慢/忙"},
-      {char:"纟",pinyin:"sī",meaning:"Silk",examples:"红/绿/线/结"},
-      {char:"钅",pinyin:"jīn",meaning:"Metal (radical)",examples:"银/铁/铜/锅"},
-      {char:"衤",pinyin:"yī",meaning:"Clothes (radical)",examples:"被/裤/裙/袜"},
-      {char:"饣",pinyin:"shí",meaning:"Food (radical)",examples:"饭/饮/饱/馆"},
-      {char:"牜",pinyin:"niú",meaning:"Cow",examples:"特/物/牧"},
-      {char:"犬",pinyin:"quǎn",meaning:"Dog",examples:"狗/猎/猛/兽"},
-      {char:"鸟",pinyin:"niǎo",meaning:"Bird",examples:"鸡/鸭/鹅/鸣"},
-      {char:"鱼",pinyin:"yú",meaning:"Fish",examples:"鲜/鲸/钓/鲁"},
-      {char:"虫",pinyin:"chóng",meaning:"Insect",examples:"蛇/蜂/蚁/蝶"},
-      {char:"酉",pinyin:"yǒu",meaning:"Wine",examples:"酒/酸/醒/醇"},
-      {char:"辛",pinyin:"xīn",meaning:"Bitter",examples:"辞/辨/辣/辨"}
-    ]
-  }
+// ============================================================
+//  DATA
+// ============================================================
+
+const RADICALS = [
+  {id:1,title:"Human & Body",radicals:[
+    {c:"人",p:"rén",m:"Person"},{c:"女",p:"nǚ",m:"Woman"},{c:"子",p:"zǐ",m:"Child"},
+    {c:"口",p:"kǒu",m:"Mouth"},{c:"耳",p:"ěr",m:"Ear"},{c:"目",p:"mù",m:"Eye"},
+    {c:"心",p:"xīn",m:"Heart"},{c:"手",p:"shǒu",m:"Hand"},{c:"足",p:"zú",m:"Foot"},
+    {c:"力",p:"lì",m:"Strength"},{c:"页",p:"yè",m:"Page / Head"}
+  ]},
+  {id:2,title:"Nature & Elements",radicals:[
+    {c:"水",p:"shuǐ",m:"Water"},{c:"火",p:"huǒ",m:"Fire"},{c:"木",p:"mù",m:"Wood"},
+    {c:"金",p:"jīn",m:"Metal"},{c:"土",p:"tǔ",m:"Earth"},{c:"石",p:"shí",m:"Stone"},
+    {c:"日",p:"rì",m:"Sun"},{c:"月",p:"yuè",m:"Moon / Month"},{c:"山",p:"shān",m:"Mountain"},
+    {c:"田",p:"tián",m:"Field"},{c:"雨",p:"yǔ",m:"Rain"},{c:"草",p:"cǎo",m:"Grass"},
+    {c:"竹",p:"zhú",m:"Bamboo"},{c:"米",p:"mǐ",m:"Rice"},{c:"禾",p:"hé",m:"Grain"},
+    {c:"穴",p:"xué",m:"Cave"},{c:"风",p:"fēng",m:"Wind"},{c:"气",p:"qì",m:"Air"}
+  ]},
+  {id:3,title:"Actions & Movement",radicals:[
+    {c:"走",p:"zǒu",m:"Walk"},{c:"辶",p:"chuò",m:"Walk / Movement"},{c:"讠",p:"yán",m:"Speak"},
+    {c:"饣",p:"shí",m:"Food / Eat"},{c:"见",p:"jiàn",m:"See"},{c:"车",p:"chē",m:"Vehicle"},
+    {c:"刀",p:"dāo",m:"Knife / Cut"},{c:"弓",p:"gōng",m:"Bow"},{c:"舟",p:"zhōu",m:"Boat"},
+    {c:"止",p:"zhǐ",m:"Stop"},{c:"飞",p:"fēi",m:"Fly"},{c:"彳",p:"chì",m:"Go"},
+    {c:"文",p:"wén",m:"Action / Tap"},{c:"殳",p:"shū",m:"Weapon"}
+  ]},
+  {id:4,title:"Objects & Places",radicals:[
+    {c:"宀",p:"mián",m:"Roof / Home"},{c:"门",p:"mén",m:"Door"},{c:"户",p:"hù",m:"Household"},
+    {c:"广",p:"guǎng",m:"Building"},{c:"囗",p:"wéi",m:"Enclosure"},{c:"衣",p:"yī",m:"Clothes"},
+    {c:"巾",p:"jīn",m:"Cloth"},{c:"贝",p:"bèi",m:"Money / Shells"},{c:"瓦",p:"wǎ",m:"Tile"},
+    {c:"王",p:"wáng",m:"Jade / King"},{c:"玉",p:"yù",m:"Jade"},{c:"皿",p:"mǐn",m:"Dish"},
+    {c:"礻",p:"shì",m:"Spirit / Show"},{c:"戈",p:"gē",m:"Weapon"},{c:"斤",p:"jīn",m:"Axe"},
+    {c:"匕",p:"bǐ",m:"Spoon"},{c:"厂",p:"hǎn",m:"Cliff"},{c:"几",p:"jǐ",m:"Table"}
+  ]},
+  {id:5,title:"Shapes & Numbers",radicals:[
+    {c:"一",p:"yī",m:"One"},{c:"二",p:"èr",m:"Two"},{c:"十",p:"shí",m:"Ten"},
+    {c:"又",p:"yòu",m:"Right hand"},{c:"寸",p:"cùn",m:"Inch"},{c:"工",p:"gōng",m:"Work"},
+    {c:"大",p:"dà",m:"Big"},{c:"小",p:"xiǎo",m:"Small"},{c:"冂",p:"jiōng",m:"Border"},
+    {c:"冖",p:"mì",m:"Cover"},{c:"八",p:"bā",m:"Divide"},{c:"卜",p:"tǔ",m:"Lid"},
+    {c:"幺",p:"yāo",m:"Tiny"},{c:"己",p:"jǐ",m:"Self"},{c:"角",p:"jiǎo",m:"Horn"},
+    {c:"厂",p:"hǎn",m:"Cliff"},{c:"勹",p:"bāo",m:"Wrap"}
+  ]},
+  {id:6,title:"Supplementary",radicals:[
+    {c:"立",p:"lì",m:"Stand"},{c:"长",p:"cháng",m:"Long"},{c:"阝",p:"fǔ",m:"Mound / City"},
+    {c:"氵",p:"shuǐ",m:"Water (radical)"},{c:"灬",p:"huǒ",m:"Fire (radical)"},{c:"扌",p:"shǒu",m:"Hand (radical)"},
+    {c:"忄",p:"xīn",m:"Heart (radical)"},{c:"纟",p:"sī",m:"Silk"},{c:"钅",p:"jīn",m:"Metal (radical)"},
+    {c:"衤",p:"yī",m:"Clothes (radical)"},{c:"饣",p:"shí",m:"Food (radical)"},{c:"牜",p:"niú",m:"Cow"},
+    {c:"犬",p:"quǎn",m:"Dog"},{c:"鸟",p:"niǎo",m:"Bird"},{c:"鱼",p:"yú",m:"Fish"},
+    {c:"虫",p:"chóng",m:"Insect"},{c:"酉",p:"yǒu",m:"Wine"},{c:"辛",p:"xīn",m:"Bitter"}
+  ]}
 ];
 
-// ===== STATE =====
+const WORDS = [
+  {id:1,title:"Essential Verbs",words:[
+    {c:"觉得",p:"juéde",m:"to feel / to think"},{c:"认为",p:"rènwéi",m:"to believe / to consider"},
+    {c:"希望",p:"xīwàng",m:"to hope"},{c:"愿意",p:"yuànyì",m:"to be willing"},
+    {c:"准备",p:"zhǔnbèi",m:"to prepare"},{c:"决定",p:"juédìng",m:"to decide"},
+    {c:"安排",p:"ānpái",m:"to arrange"},{c:"检查",p:"jiǎnchá",m:"to check / to inspect"},
+    {c:"讨论",p:"tǎolùn",m:"to discuss"},{c:"计划",p:"jìhuà",m:"to plan"},
+    {c:"同意",p:"tóngyì",m:"to agree"},{c:"相信",p:"xiāngxìn",m:"to believe"},
+    {c:"了解",p:"liǎojiě",m:"to understand"},{c:"发现",p:"fāxiàn",m:"to discover"},
+    {c:"影响",p:"yǐngxiǎng",m:"to influence"},{c:"表示",p:"biǎoshì",m:"to express"},
+    {c:"需要",p:"xūyào",m:"to need"},{c:"继续",p:"jìxù",m:"to continue"},
+    {c:"开始",p:"kāishǐ",m:"to begin"},{c:"结束",p:"jiéshù",m:"to end"},
+    {c:"完成",p:"wánchéng",m:"to complete"},{c:"改变",p:"gǎibiàn",m:"to change"},
+    {c:"提高",p:"tígāo",m:"to improve / to raise"},{c:"降低",p:"jiàngdī",m:"to lower / to reduce"},
+    {c:"增加",p:"zēngjiā",m:"to increase"},{c:"减少",p:"jiǎnshǎo",m:"to decrease / to reduce"},
+    {c:"保护",p:"bǎohù",m:"to protect"},{c:"发展",p:"fāzhǎn",m:"to develop"},
+    {c:"解决",p:"jiějué",m:"to solve"},{c:"实现",p:"shíxiàn",m:"to realise / to achieve"},
+    {c:"接受",p:"jiēshòu",m:"to accept"},{c:"拒绝",p:"jùjué",m:"to refuse"},
+    {c:"坚持",p:"jiānchí",m:"to insist / to persist"},{c:"放弃",p:"fàngqì",m:"to give up"},
+    {c:"支持",p:"zhīchí",m:"to support"},{c:"反对",p:"fǎnduì",m:"to oppose"},
+    {c:"考虑",p:"kǎolǜ",m:"to consider"},{c:"比较",p:"bǐjiào",m:"to compare"},
+    {c:"选择",p:"xuǎnzé",m:"to choose"},{c:"适合",p:"shìhé",m:"to suit / to fit"},
+    {c:"利用",p:"lìyòng",m:"to use / to employ"},{c:"发挥",p:"fāhuī",m:"to display / to exert"},
+    {c:"产生",p:"chǎnshēng",m:"to produce / to arise"},{c:"造成",p:"zàochéng",m:"to cause"},
+    {c:"积累",p:"jīlěi",m:"to accumulate"},{c:"保持",p:"bǎochí",m:"to maintain"},
+    {c:"达到",p:"dádào",m:"to reach"},{c:"获得",p:"huòdé",m:"to obtain"},
+    {c:"失去",p:"shīqù",m:"to lose"},{c:"出现",p:"chūxiàn",m:"to appear"},
+    {c:"消失",p:"xiāoshì",m:"to disappear"},{c:"消费",p:"xiāoféi",m:"to consume"},
+    {c:"吸引",p:"xīyǐn",m:"to attract"},{c:"建议",p:"jiànyì",m:"to suggest"},
+    {c:"批评",p:"pīpíng",m:"to criticise"},{c:"表扬",p:"biǎoyáng",m:"to praise"},
+    {c:"原谅",p:"yuánliàng",m:"to forgive"},{c:"道歉",p:"dàoqiàn",m:"to apologise"},
+    {c:"解释",p:"jiěshì",m:"to explain"},{c:"证明",p:"zhèngmíng",m:"to prove"}
+  ]},
+  {id:2,title:"Essential Adjectives",words:[
+    {c:"漂亮",p:"piàoliang",m:"beautiful"},{c:"简单",p:"jiǎndān",m:"simple"},
+    {c:"复杂",p:"fùzá",m:"complex"},{c:"方便",p:"fāngbiàn",m:"convenient"},
+    {c:"严重",p:"yánzhòng",m:"serious / severe"},{c:"普遍",p:"pǔbiàn",m:"ordinary / universal"},
+    {c:"特别",p:"tèbié",m:"special"},{c:"丰富",p:"fēngfù",m:"rich / abundant"},
+    {c:"危险",p:"wēixiǎn",m:"dangerous"},{c:"安全",p:"ānquán",m:"safe"},
+    {c:"重要",p:"zhòngyào",m:"important"},{c:"必要",p:"bìyào",m:"necessary"},
+    {c:"可能",p:"kěnéng",m:"possible"},{c:"困难",p:"kùnnán",m:"difficult"},
+    {c:"容易",p:"róngyì",m:"easy"},{c:"幸福",p:"xìngfú",m:"happy / blessed"},
+    {c:"紧张",p:"jǐnzhāng",m:"nervous"},{c:"激动",p:"jīdòng",m:"excited"},
+    {c:"失望",p:"shīwàng",m:"disappointed"},{c:"骄傲",p:"jiāo'ào",m:"proud"},
+    {c:"辛苦",p:"xīnkǔ",m:"hardworking / tough"},{c:"舒服",p:"shūfu",m:"comfortable"},
+    {c:"着急",p:"zháojí",m:"worried / anxious"},{c:"奇怪",p:"qíguài",m:"strange"},
+    {c:"聪明",p:"cōngming",m:"clever"},{c:"老实",p:"lǎoshí",m:"honest"},
+    {c:"认真",p:"rènzhēn",m:"serious / earnest"},{c:"马虎",p:"mǎhu",m:"careless"},
+    {c:"耐心",p:"nàixīn",m:"patient"},{c:"热情",p:"rèqíng",m:"enthusiastic"},
+    {c:"积极",p:"jījí",m:"positive / active"},{c:"消极",p:"xiāojí",m:"negative / passive"},
+    {c:"主动",p:"zhǔdòng",m:"proactive"},{c:"被动",p:"bèidòng",m:"passive"},
+    {c:"成功",p:"chénggōng",m:"successful"},{c:"伟大",p:"wěidà",m:"great"},
+    {c:"正确",p:"zhèngquè",m:"correct"},{c:"错误",p:"cuòwù",m:"wrong / erroneous"},
+    {c:"主要",p:"zhǔyào",m:"main / primary"},{c:"一般",p:"yībān",m:"general / average"},
+    {c:"明显",p:"míngxiǎn",m:"obvious"},{c:"相同",p:"xiāngtóng",m:"same"},
+    {c:"不同",p:"bùtóng",m:"different"},{c:"相似",p:"xiāngsì",m:"similar"},
+    {c:"具体",p:"jùtǐ",m:"specific"},{c:"整个",p:"zhěnggè",m:"entire / whole"}
+  ]},
+  {id:3,title:"Time & Frequency",words:[
+    {c:"已经",p:"yǐjīng",m:"already"},{c:"曾经",p:"céngjīng",m:"once / ever"},
+    {c:"从来",p:"cónglái",m:"always / never"},{c:"永远",p:"yǒngyuǎn",m:"forever"},
+    {c:"经常",p:"jīngcháng",m:"often"},{c:"偶尔",p:"ǒu'ěr",m:"occasionally"},
+    {c:"临时",p:"línshí",m:"temporary"},{c:"平时",p:"píngshí",m:"usually"},
+    {c:"最近",p:"zuìjìn",m:"recently"},{c:"将来",p:"jiānglái",m:"future"},
+    {c:"以前",p:"yǐqián",m:"before"},{c:"以后",p:"yǐhòu",m:"after"},
+    {c:"现在",p:"xiànzài",m:"now"},{c:"目前",p:"mùqián",m:"currently"},
+    {c:"终于",p:"zhōngyú",m:"finally"},{c:"立刻",p:"lìkè",m:"immediately"},
+    {c:"突然",p:"tūrán",m:"suddenly"},{c:"逐渐",p:"zhújiàn",m:"gradually"},
+    {c:"提前",p:"tíqián",m:"in advance"},{c:"按时",p:"ànshí",m:"on time"},
+    {c:"及时",p:"jíshí",m:"timely"},{c:"始终",p:"shǐzhōng",m:"from beginning to end"},
+    {c:"暂时",p:"zànshí",m:"temporarily"},{c:"时刻",p:"shíkè",m:"moment"},
+    {c:"期间",p:"qījiān",m:"during"},{c:"同时",p:"tóngshí",m:"at the same time"},
+    {c:"然后",p:"ránhòu",m:"then"},{c:"首先",p:"shǒuxiān",m:"first"},
+    {c:"最后",p:"zuìhòu",m:"finally / last"}
+  ]},
+  {id:4,title:"Connecting Words",words:[
+    {c:"虽然",p:"suīrán",m:"although"},{c:"但是",p:"dànshì",m:"but"},
+    {c:"然而",p:"rán'ér",m:"however"},{c:"因此",p:"yīncǐ",m:"therefore"},
+    {c:"而且",p:"érqiě",m:"and also"},{c:"不仅",p:"bùjǐn",m:"not only"},
+    {c:"只要",p:"zhǐyào",m:"as long as"},{c:"除非",p:"chúfēi",m:"unless"},
+    {c:"无论",p:"wúlùn",m:"no matter"},{c:"不管",p:"búguǎn",m:"regardless"},
+    {c:"既然",p:"jìrán",m:"since"},{c:"即使",p:"jíshǐ",m:"even if"},
+    {c:"如果",p:"rúguǒ",m:"if"},{c:"要是",p:"yàoshi",m:"if (colloquial)"},
+    {c:"所以",p:"suǒyǐ",m:"so / therefore"},{c:"因为",p:"yīnwèi",m:"because"},
+    {c:"不但",p:"búdàn",m:"not only"},{c:"反而",p:"fǎn'ér",m:"instead"},
+    {c:"否则",p:"fǒuzé",m:"otherwise"},{c:"于是",p:"yúshì",m:"then / so"},
+    {c:"一方面",p:"yīfāngmiàn",m:"on one hand"},{c:"另一方面",p:"lìngyīfāngmiàn",m:"on the other hand"},
+    {c:"除了",p:"chúle",m:"besides / except"},{c:"此外",p:"cǐwài",m:"in addition"},
+    {c:"总之",p:"zǒngzhī",m:"in short"},{c:"例如",p:"lìrú",m:"for example"},
+    {c:"尽管",p:"jǐnguǎn",m:"even though"},{c:"不过",p:"búguò",m:"however / but"},
+    {c:"则",p:"zé",m:"then / but"}
+  ]},
+  {id:5,title:"Emotions & Thinking",words:[
+    {c:"高兴",p:"gāoxìng",m:"happy"},{c:"难过",p:"nánguò",m:"sad"},
+    {c:"害怕",p:"hàipà",m:"afraid"},{c:"吃惊",p:"chījīng",m:"surprised"},
+    {c:"生气",p:"shēngqì",m:"angry"},{c:"满意",p:"mǎnyì",m:"satisfied"},
+    {c:"后悔",p:"hòuhǐ",m:"regret"},{c:"担心",p:"dānxīn",m:"worried"},
+    {c:"感动",p:"gǎndòng",m:"moved / touched"},{c:"着急",p:"zháojí",m:"anxious"},
+    {c:"无聊",p:"wúliáo",m:"bored"},{c:"羡慕",p:"xiànmù",m:"envious"},
+    {c:"嫉妒",p:"jídù",m:"jealous"},{c:"害羞",p:"hàixiū",m:"shy"},
+    {c:"孤独",p:"gūdú",m:"lonely"},{c:"自信",p:"zìxìn",m:"confident"},
+    {c:"自豪",p:"zìháo",m:"proud"},{c:"思念",p:"sīniàn",m:"to miss (someone)"},
+    {c:"期待",p:"qīdài",m:"to look forward to"},{c:"享受",p:"xiǎngshòu",m:"to enjoy"},
+    {c:"讨厌",p:"tǎoyàn",m:"to hate"},{c:"喜欢",p:"xǐhuan",m:"to like"},
+    {c:"热爱",p:"rè'ài",m:"to love deeply"},{c:"想象",p:"xiǎngxiàng",m:"to imagine"},
+    {c:"记得",p:"jìde",m:"to remember"},{c:"忘记",p:"wàngjì",m:"to forget"},
+    {c:"理解",p:"lǐjiě",m:"to understand"},{c:"误会",p:"wùhuì",m:"to misunderstand"},
+    {c:"原谅",p:"yuánliàng",m:"to forgive"},{c:"信任",p:"xìnrèn",m:"to trust"}
+  ]},
+  {id:6,title:"Society & Work",words:[
+    {c:"经理",p:"jīnglǐ",m:"manager"},{c:"老板",p:"lǎobǎn",m:"boss"},
+    {c:"教授",p:"jiàoshòu",m:"professor"},{c:"社会",p:"shèhuì",m:"society"},
+    {c:"政府",p:"zhèngfǔ",m:"government"},{c:"经济",p:"jīngjì",m:"economy"},
+    {c:"环境",p:"huánjìng",m:"environment"},{c:"技术",p:"jìshù",m:"technology"},
+    {c:"文化",p:"wénhuà",m:"culture"},{c:"科学",p:"kēxué",m:"science"},
+    {c:"教育",p:"jiàoyù",m:"education"},{c:"艺术",p:"yìshù",m:"art"},
+    {c:"历史",p:"lìshǐ",m:"history"},{c:"能力",p:"nénglì",m:"ability"},
+    {c:"经验",p:"jīngyàn",m:"experience"},{c:"条件",p:"tiáojiàn",m:"condition"},
+    {c:"机会",p:"jīhuì",m:"opportunity"},{c:"目标",p:"mùbiāo",m:"goal / target"},
+    {c:"基础",p:"jīchǔ",m:"foundation"},{c:"任务",p:"rènwu",m:"task / mission"},
+    {c:"成就",p:"chéngjiù",m:"achievement"},{c:"权利",p:"quánlì",m:"right"},
+    {c:"责任",p:"zérèn",m:"responsibility"},{c:"民主",p:"mínzhǔ",m:"democracy"},
+    {c:"关系",p:"guānxi",m:"relationship"},{c:"制度",p:"zhìdù",m:"system"},
+    {c:"法律",p:"fǎlǜ",m:"law"},{c:"现代",p:"xiàndài",m:"modern"},
+    {c:"传统",p:"chuántǒng",m:"tradition"},{c:"国际",p:"guójì",m:"international"}
+  ]},
+  {id:7,title:"Body & Health",words:[
+    {c:"脑袋",p:"nǎodai",m:"head"},{c:"脖子",p:"bózi",m:"neck"},
+    {c:"肩膀",p:"jiānbǎng",m:"shoulder"},{c:"胃",p:"wèi",m:"stomach"},
+    {c:"肺",p:"fèi",m:"lung"},{c:"发烧",p:"fāshāo",m:"fever"},
+    {c:"感冒",p:"gǎnmào",m:"cold (illness)"},{c:"咳嗽",p:"késou",m:"cough"},
+    {c:"治疗",p:"zhìliáo",m:"to treat"},{c:"药",p:"yào",m:"medicine"},
+    {c:"手术",p:"shǒushù",m:"surgery"},{c:"检查",p:"jiǎnchá",m:"checkup"},
+    {c:"健康",p:"jiànkāng",m:"healthy"},{c:"营养",p:"yíngyǎng",m:"nutrition"},
+    {c:"锻炼",p:"duànliàn",m:"exercise"},{c:"休息",p:"xiūxi",m:"rest"},
+    {c:"睡眠",p:"shuīmián",m:"sleep"},{c:"压力",p:"yālì",m:"stress / pressure"},
+    {c:"疲劳",p:"píláo",m:"fatigue"},{c:"减肥",p:"jiǎnféi",m:"lose weight"}
+  ]},
+  {id:8,title:"Travel & Places",words:[
+    {c:"机场",p:"jīchǎng",m:"airport"},{c:"航班",p:"hángbān",m:"flight"},
+    {c:"签证",p:"qiānzhèng",m:"visa"},{c:"护照",p:"hùzhào",m:"passport"},
+    {c:"酒店",p:"jiǔdiàn",m:"hotel"},{c:"预订",p:"yùdìng",m:"to reserve"},
+    {c:"出租车",p:"chūzūchē",m:"taxi"},{c:"地图",p:"dìtú",m:"map"},
+    {c:"方向",p:"fāngxiàng",m:"direction"},{c:"距离",p:"jùlí",m:"distance"},
+    {c:"交通",p:"jiāotōng",m:"traffic / transport"},{c:"旅游",p:"lǚyóu",m:"travel"},
+    {c:"景点",p:"jǐngdiǎn",m:"scenic spot"},{c:"博物馆",p:"bówùguǎn",m:"museum"},
+    {c:"车站",p:"chēzhàn",m:"station"},{c:"地铁",p:"dìtiě",m:"subway"},
+    {c:"飞机",p:"fēijī",m:"airplane"},{c:"火车",p:"huǒchē",m:"train"},
+    {c:"高速",p:"gāosù",m:"highway"},{c:"出发",p:"chūfā",m:"to depart"}
+  ]},
+  {id:9,title:"Common Nouns",words:[
+    {c:"办法",p:"bànfǎ",m:"method / way"},{c:"价格",p:"jiàgé",m:"price"},
+    {c:"消息",p:"xiāoxi",m:"news"},{c:"故事",p:"gùshì",m:"story"},
+    {c:"问题",p:"wèntí",m:"question / problem"},{c:"答案",p:"dá'àn",m:"answer"},
+    {c:"原因",p:"yuányīn",m:"reason"},{c:"结果",p:"jiéguǒ",m:"result"},
+    {c:"内容",p:"nèiróng",m:"content"},{c:"形式",p:"xíngshì",m:"form / format"},
+    {c:"数量",p:"shùliàng",m:"quantity"},{c:"质量",p:"zhìliàng",m:"quality"},
+    {c:"材料",p:"cáiliào",m:"material"},{c:"设备",p:"shèbèi",m:"equipment"},
+    {c:"方法",p:"fāngfǎ",m:"method"},{c:"意见",p:"yìjiàn",m:"opinion"},
+    {c:"态度",p:"tàidù",m:"attitude"},{c:"习惯",p:"xíguàn",m:"habit"},
+    {c:"特点",p:"tèdiǎn",m:"feature / trait"},{c:"优点",p:"yōudiǎn",m:"advantage"},
+    {c:"缺点",p:"quēdiǎn",m:"disadvantage"},{c:"标准",p:"biāozhǔn",m:"standard"},
+    {c:"规则",p:"guīzé",m:"rule"},{c:"原则",p:"yuánzé",m:"principle"},
+    {c:"印象",p:"yìnxiàng",m:"impression"},{c:"经历",p:"jīnglì",m:"experience"},
+    {c:"感情",p:"gǎnqíng",m:"emotion / affection"},{c:"情况",p:"qíngkuàng",m:"situation"},
+    {c:"效果",p:"xiàoguǒ",m:"effect / result"},{c:"过程",p:"guòchéng",m:"process"}
+  ]},
+  {id:10,title:"Adverbs & Useful Words",words:[
+    {c:"特别",p:"tèbié",m:"especially"},{c:"非常",p:"fēicháng",m:"very"},
+    {c:"比较",p:"bǐjiào",m:"relatively"},{c:"越来越",p:"yuèláiyuè",m:"more and more"},
+    {c:"当然",p:"dāngrán",m:"of course"},{c:"其实",p:"qíshí",m:"actually"},
+    {c:"大概",p:"dàgài",m:"probably"},{c:"也许",p:"yěxǔ",m:"perhaps"},
+    {c:"几乎",p:"jīhū",m:"almost"},{c:"差不多",p:"chàbùduō",m:"almost / nearly"},
+    {c:"尤其",p:"yóuqí",m:"especially"},{c:"至少",p:"zhìshǎo",m:"at least"},
+    {c:"最多",p:"zuìduō",m:"at most"},{c:"大约",p:"dàyuē",m:"approximately"},
+    {c:"正好",p:"zhènghǎo",m:"just right"},{c:"故意",p:"gùyì",m:"deliberately"},
+    {c:"顺便",p:"shùnbiàn",m:"by the way"},{c:"尽量",p:"jǐnliàng",m:"as much as possible"},
+    {c:"逐渐",p:"zhújiàn",m:"gradually"},{c:"完全",p:"wánquán",m:"completely"},
+    {c:"基本上",p:"jīběnshàng",m:"basically"},{c:"互相",p:"hùxiāng",m:"mutually / each other"},
+    {c:"分别",p:"fēnbié",m:"respectively"},{c:"共同",p:"gòngtóng",m:"together / common"},
+    {c:"仅仅",p:"jǐnjǐn",m:"only"},{c:"不断",p:"búduàn",m:"continuously"},
+    {c:"原来",p:"yuánlái",m:"originally"},{c:"果然",p:"guǒrán",m:"as expected"},
+    {c:"居然",p:"jūrán",m:"unexpectedly"},{c:"竟然",p:"jìngrán",m:"surprisingly"}
+  ]}
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let currentMode = 'radicals';
+let quizCount = 1;
 let currentQuiz = [];
 let currentIndex = 0;
 let score = 0;
 let answered = false;
 let selectedSections = [];
+let selectedMode = 'radicals';
 let wrongAnswers = [];
+let quizSession = []; // for multiple quizzes
+let sessionIndex = 0;
 
-// ===== UTILITY =====
+// ============================================================
+//  UTILS
+// ============================================================
 function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
-
 function sample70(arr) {
-  const count = Math.max(1, Math.ceil(arr.length * 0.7));
-  return shuffle(arr).slice(0, count);
+  const c=Math.max(1,Math.ceil(arr.length*0.7));
+  return shuffle(arr).slice(0,c);
 }
 
-// ===== INIT MENU =====
+// ============================================================
+//  MENU INIT
+// ============================================================
 function initMenu() {
-  const grid = document.getElementById('sectionsGrid');
-  grid.innerHTML = '';
+  // Count chips
+  const chipsEl=document.getElementById('countChips');
+  chipsEl.innerHTML='';
+  [1,2,3,5,10].forEach(n=>{
+    const chip=document.createElement('button');
+    chip.className='count-chip'+(n===quizCount?' active':'');
+    chip.textContent=n;
+    chip.onclick=()=>{quizCount=n;chipsEl.querySelectorAll('.count-chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');};
+    chipsEl.appendChild(chip);
+  });
 
-  SECTIONS.forEach(s => {
-    const quizCount = Math.max(1, Math.ceil(s.radicals.length * 0.7));
-    const card = document.createElement('div');
-    card.className = 'section-card';
-    card.innerHTML = `
-      <div class="section-num">Section ${s.id}</div>
-      <div class="section-title">${s.title}</div>
-      <div class="section-count">${s.radicals.length} radicals</div>
-      <div class="quiz-info">${quizCount} questions per quiz</div>
+  // Radicals
+  buildSectionGrid('radicalsGrid', RADICALS, 'radicals');
+  buildRangeSelects('rangeFrom','rangeTo', RADICALS, 'radicals');
+
+  // Words
+  buildSectionGrid('wordsGrid', WORDS, 'words');
+  buildRangeSelects('wordsRangeFrom','wordsRangeTo', WORDS, 'words');
+}
+
+function buildSectionGrid(gridId, sections, mode) {
+  const grid=document.getElementById(gridId);
+  grid.innerHTML='';
+  sections.forEach(s=>{
+    const items=mode==='radicals'?s.radicals:s.words;
+    const quizN=Math.max(1,Math.ceil(items.length*0.7));
+    const card=document.createElement('div');
+    card.className='section-card';
+    card.innerHTML=`
+      <div class="s-num">Section ${s.id}</div>
+      <div class="s-title">${s.title}</div>
+      <div class="s-count">${items.length} ${mode==='radicals'?'radicals':'words'}</div>
+      <div class="s-quiz">🎯 ${quizN} questions per quiz</div>
     `;
-    card.onclick = () => startSectionQuiz(s.id);
+    card.onclick=()=>startSectionQuiz(s.id, mode);
     grid.appendChild(card);
   });
-
-  // Range selects
-  const fromSel = document.getElementById('rangeFrom');
-  const toSel = document.getElementById('rangeTo');
-  fromSel.innerHTML = '';
-  toSel.innerHTML = '';
-
-  SECTIONS.forEach(s => {
-    const label = `Section ${s.id}: ${s.title} (${s.radicals.length})`;
-    fromSel.innerHTML += `<option value="${s.id}">${label}</option>`;
-    toSel.innerHTML += `<option value="${s.id}">${label}</option>`;
-  });
-  toSel.value = SECTIONS.length;
-
-  fromSel.onchange = updateRangeInfo;
-  toSel.onchange = updateRangeInfo;
 }
 
-function updateRangeInfo() {
-  const from = parseInt(document.getElementById('rangeFrom').value);
-  const to = parseInt(document.getElementById('rangeTo').value);
-  const info = document.getElementById('rangeInfo');
-
-  if (from > to) {
-    info.textContent = '❌ "From" must be less than or equal to "To"';
-    info.className = 'range-info visible';
-    info.style.background = 'rgba(225,112,85,0.1)';
-    info.style.color = 'var(--red)';
-    return;
-  }
-
-  let total = 0;
-  for (let i = from; i <= to; i++) {
-    total += SECTIONS[i-1].radicals.length;
-  }
-  const quizCount = Math.max(1, Math.ceil(total * 0.7));
-
-  info.style.background = '';
-  info.style.color = '';
-  info.innerHTML = `✅ Sections ${from}–${to}: <strong>${total}</strong> radicals → <strong>${quizCount}</strong> questions`;
-  info.className = 'range-info visible';
+function buildRangeSelects(fromId, toId, sections, mode) {
+  const fromEl=document.getElementById(fromId);
+  const toEl=document.getElementById(toId);
+  fromEl.innerHTML=''; toEl.innerHTML='';
+  sections.forEach(s=>{
+    const items=mode==='radicals'?s.radicals:s.words;
+    const label=`Section ${s.id}: ${s.title} (${items.length})`;
+    fromEl.innerHTML+=`<option value="${s.id}">${label}</option>`;
+    toEl.innerHTML+=`<option value="${s.id}">${label}</option>`;
+  });
+  toEl.value=sections.length;
+  const infoId = mode==='radicals'?'rangeInfo':'wordsRangeInfo';
+  fromEl.onchange=()=>updateRangeInfo(fromId,toId,infoId,sections,mode);
+  toEl.onchange=()=>updateRangeInfo(fromId,toId,infoId,sections,mode);
 }
 
-// ===== QUIZ GENERATION =====
-function generateQuiz(sectionIds) {
-  selectedSections = sectionIds;
+function updateRangeInfo(fromId,toId,infoId,sections,mode) {
+  const from=parseInt(document.getElementById(fromId).value);
+  const to=parseInt(document.getElementById(toId).value);
+  const info=document.getElementById(infoId);
+  if(from>to){info.textContent='❌ "From" must be ≤ "To"';info.className='range-info visible';info.style.background='var(--red-bg)';info.style.color='var(--red)';return;}
+  let total=0;
+  for(let i=from;i<=to;i++){const s=sections.find(x=>x.id===i);total+=(mode==='radicals'?s.radicals:s.words).length;}
+  const quizN=Math.max(1,Math.ceil(total*0.7));
+  info.style.background='';info.style.color='';
+  info.innerHTML=`✅ Sections ${from}–${to}: <strong>${total}</strong> items → <strong>${quizN}</strong> questions × <strong>${quizCount}</strong> quiz${quizCount>1?'zes':''} = <strong>${quizN*quizCount}</strong> total questions`;
+  info.className='range-info visible';
+}
 
-  // Collect radicals from selected sections
-  let pool = [];
-  sectionIds.forEach(id => {
-    const section = SECTIONS.find(s => s.id === id);
-    if (section) pool.push(...section.radicals);
-  });
+// ============================================================
+//  MODE SWITCH
+// ============================================================
+function switchMode(mode) {
+  currentMode=mode;
+  document.getElementById('tabRadicals').classList.toggle('active',mode==='radicals');
+  document.getElementById('tabWords').classList.toggle('active',mode==='words');
+  document.getElementById('radicalsPanel').style.display=mode==='radicals'?'block':'none';
+  document.getElementById('wordsPanel').style.display=mode==='words'?'block':'none';
+}
 
-  // Sample 70%
-  const sampled = sample70(pool);
+// ============================================================
+//  QUIZ GENERATION
+// ============================================================
+function generateQuiz(sectionIds, mode) {
+  selectedSections=sectionIds;
+  selectedMode=mode;
+  const sections=mode==='radicals'?RADICALS:WORDS;
+  const key=mode==='radicals'?'radicals':'words';
 
-  // Generate questions with random types
-  const questions = sampled.map(radical => {
-    const type = Math.floor(Math.random() * 3); // 0=meaning, 1=pinyin, 2=character
-    return createQuestion(radical, type, pool);
+  let pool=[];
+  sectionIds.forEach(id=>{const s=sections.find(x=>x.id===id);if(s)pool.push(...s[key]);});
+  const sampled=sample70(pool);
+
+  const questions=sampled.map(item=>{
+    const type=mode==='radicals'?(Math.floor(Math.random()*3)):(Math.floor(Math.random()*2)); // radicals:3 types, words:2 types
+    return createQuestion(item,type,pool,mode);
   });
 
   return shuffle(questions);
 }
 
-function createQuestion(radical, type, pool) {
-  // Get distractors (same pool, excluding correct answer)
-  const others = pool.filter(r =>
-    r.char !== radical.char || r.pinyin !== radical.pinyin
-  );
-  const distractors = shuffle(others).slice(0, 3);
+function createQuestion(item,type,pool,mode) {
+  const others=pool.filter(r=>(mode==='radicals'?r.c:r.c)!==(mode==='radicals'?item.c:item.c)||r.p!==item.p);
+  const distractors=shuffle(others).slice(0,3);
 
-  let question, options, correctIndex;
+  let question,options,correctIndex;
+  const charKey='c',pinyinKey='p',meaningKey='m';
 
-  switch(type) {
-    case 0: // Given char → pick meaning
-      question = {
-        prompt: radical.char,
-        hint: `What does this radical mean?`,
-        type: 'MEANING'
-      };
-      options = shuffle([
-        {text: radical.meaning, correct: true},
-        ...distractors.map(d => ({text: d.meaning, correct: false}))
-      ]);
-      break;
-
-    case 1: // Given char → pick pinyin
-      question = {
-        prompt: radical.char,
-        hint: `What is the pinyin?`,
-        type: 'PINYIN'
-      };
-      options = shuffle([
-        {text: radical.pinyin, correct: true},
-        ...distractors.map(d => ({text: d.pinyin, correct: false}))
-      ]);
-      break;
-
-    case 2: // Given meaning → pick char
-      question = {
-        prompt: radical.meaning,
-        hint: `Which radical means this?`,
-        type: 'CHARACTER'
-      };
-      options = shuffle([
-        {text: radical.char, correct: true},
-        ...distractors.map(d => ({text: d.char, correct: false}))
-      ]);
-      break;
+  if(mode==='radicals') {
+    switch(type){
+      case 0: // char → meaning
+        question={prompt:item[charKey],hint:'What does this radical mean?',type:'MEANING'};
+        options=shuffle([{text:item[meaningKey],correct:true},...distractors.map(d=>({text:d[meaningKey],correct:false}))]);
+        break;
+      case 1: // char → pinyin
+        question={prompt:item[charKey],hint:'What is the pinyin?',type:'PINYIN'};
+        options=shuffle([{text:item[pinyinKey],correct:true},...distractors.map(d=>({text:d[pinyinKey],correct:false}))]);
+        break;
+      case 2: // meaning → char
+        question={prompt:item[meaningKey],hint:'Which radical means this?',type:'CHARACTER'};
+        options=shuffle([{text:item[charKey],correct:true},...distractors.map(d=>({text:d[charKey],correct:false}))]);
+        break;
+    }
+  } else {
+    switch(type){
+      case 0: // char → meaning
+        question={prompt:item[charKey],hint:'What does this word mean?',type:'MEANING'};
+        options=shuffle([{text:item[meaningKey],correct:true},...distractors.map(d=>({text:d[meaningKey],correct:false}))]);
+        break;
+      case 1: // meaning → char
+        question={prompt:item[meaningKey],hint:'Which word means this?',type:'CHARACTER'};
+        options=shuffle([{text:item[charKey],correct:true},...distractors.map(d=>({text:d[charKey],correct:false}))]);
+        break;
+    }
   }
 
-  correctIndex = options.findIndex(o => o.correct);
-
-  return {
-    ...question,
-    radical,
-    options: options.map(o => o.text),
-    correctIndex,
-    correctAnswer: options[correctIndex].text
-  };
+  correctIndex=options.findIndex(o=>o.correct);
+  return {...question,item,options:options.map(o=>o.text),correctIndex,correctAnswer:options[correctIndex].text};
 }
 
-// ===== START QUIZ =====
-function startSectionQuiz(sectionId) {
-  const section = SECTIONS.find(s => s.id === sectionId);
-  currentQuiz = generateQuiz([sectionId]);
-  currentIndex = 0;
-  score = 0;
-  wrongAnswers = [];
-  showQuiz(section.title);
+// ============================================================
+//  START
+// ============================================================
+function startSectionQuiz(sectionId, mode) {
+  const sections=mode==='radicals'?RADICALS:WORDS;
+  currentQuiz=generateQuiz([sectionId],mode);
+  quizSession=[currentQuiz];
+  sessionIndex=0;
+  currentIndex=0;score=0;wrongAnswers=[];
+
+  // Generate additional quizzes if count > 1
+  for(let i=1;i<quizCount;i++){quizSession.push(generateQuiz([sectionId],mode));}
+
+  showQuiz();
 }
 
-function startRangeQuiz() {
-  const from = parseInt(document.getElementById('rangeFrom').value);
-  const to = parseInt(document.getElementById('rangeTo').value);
+function startRangeQuiz(mode) {
+  const fromId=mode==='radicals'?'rangeFrom':'wordsRangeFrom';
+  const toId=mode==='radicals'?'rangeTo':'wordsRangeTo';
+  const from=parseInt(document.getElementById(fromId).value);
+  const to=parseInt(document.getElementById(toId).value);
+  if(from>to){alert('"From" must be ≤ "To"');return;}
+  const ids=[];for(let i=from;i<=to;i++)ids.push(i);
 
-  if (from > to) {
-    alert('"From" must be less than or equal to "To"');
-    return;
-  }
+  currentQuiz=generateQuiz(ids,mode);
+  quizSession=[currentQuiz];
+  sessionIndex=0;
+  currentIndex=0;score=0;wrongAnswers=[];
 
-  const ids = [];
-  for (let i = from; i <= to; i++) ids.push(i);
+  for(let i=1;i<quizCount;i++){quizSession.push(generateQuiz(ids,mode));}
 
-  currentQuiz = generateQuiz(ids);
-  currentIndex = 0;
-  score = 0;
-  wrongAnswers = [];
-
-  let titles = ids.map(id => SECTIONS.find(s => s.id === id).title);
-  showQuiz(`Sections ${from}–${to}`);
+  showQuiz();
 }
 
-function showQuiz(label) {
-  document.getElementById('menuScreen').style.display = 'none';
-  document.getElementById('quizArea').style.display = 'block';
-  document.getElementById('resultsArea').style.display = 'none';
+function showQuiz() {
+  document.getElementById('menuScreen').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  document.getElementById('resultsArea').style.display='none';
+  // Flatten all quizzes into one
+  currentQuiz=quizSession.flat();
+  currentIndex=0;score=0;wrongAnswers=[];
   renderQuestion();
 }
 
-// ===== RENDER =====
+// ============================================================
+//  RENDER
+// ============================================================
 function renderQuestion() {
-  if (currentIndex >= currentQuiz.length) {
-    showResults();
-    return;
-  }
+  if(currentIndex>=currentQuiz.length){showResults();return;}
+  const q=currentQuiz[currentIndex];
+  answered=false;
 
-  const q = currentQuiz[currentIndex];
-  answered = false;
+  const pct=Math.round((currentIndex/currentQuiz.length)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct+'%';
 
-  // Progress
-  const pct = ((currentIndex) / currentQuiz.length) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('quizCounter').textContent=`Q ${currentIndex+1} / ${currentQuiz.length}`;
+  document.getElementById('quizScore').textContent=`✓ ${score}`;
 
-  // Counter & Score
-  document.getElementById('quizCounter').textContent = `Q ${currentIndex + 1} / ${currentQuiz.length}`;
-  document.getElementById('quizScore').textContent = `✓ ${score}`;
+  const typeLabels={MEANING:'📖 What does it mean?',PINYIN:'🔤 What is the pinyin?',CHARACTER:'✍️ Which '+(selectedMode==='radicals'?'radical':'word')+'?'};
+  document.getElementById('questionType').textContent=typeLabels[q.type];
 
-  // Question
-  const typeLabels = { MEANING: '📖 What does it mean?', PINYIN: '🔤 What is the pinyin?', CHARACTER: '✍️ Which radical?' };
-  document.getElementById('questionType').textContent = typeLabels[q.type];
-  document.getElementById('questionChar').textContent = q.prompt;
-  document.getElementById('questionHint').textContent = q.hint;
+  const promptEl=document.getElementById('questionPrompt');
+  promptEl.textContent=q.prompt;
+  // Use smaller font for long text (meanings in word mode)
+  promptEl.className='question-prompt'+(q.prompt.length>6?' small':'');
 
-  // Options
-  const grid = document.getElementById('optionsGrid');
-  grid.innerHTML = '';
-  const labels = ['A', 'B', 'C', 'D'];
+  document.getElementById('questionHint').textContent=q.hint;
 
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.innerHTML = `<span class="option-label">${labels[i]}</span>${opt}`;
-    btn.onclick = () => selectAnswer(i);
+  const grid=document.getElementById('optionsGrid');
+  grid.innerHTML='';
+  const labels=['A','B','C','D'];
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.innerHTML=`<span class="opt-label">${labels[i]}</span>${opt}`;
+    btn.onclick=()=>selectAnswer(i);
     grid.appendChild(btn);
   });
 
-  // Clear feedback
-  document.getElementById('feedbackArea').innerHTML = '';
+  document.getElementById('feedbackArea').innerHTML='';
 }
 
 function selectAnswer(index) {
-  if (answered) return;
-  answered = true;
+  if(answered)return;
+  answered=true;
+  const q=currentQuiz[currentIndex];
+  const btns=document.querySelectorAll('.option-btn');
+  const correct=q.correctIndex;
 
-  const q = currentQuiz[currentIndex];
-  const buttons = document.querySelectorAll('.option-btn');
-  const correct = q.correctIndex;
-
-  buttons.forEach((btn, i) => {
+  btns.forEach((btn,i)=>{
     btn.classList.add('disabled');
-    if (i === correct) btn.classList.add('correct');
-    if (i === index && i !== correct) btn.classList.add('wrong');
+    if(i===correct)btn.classList.add('correct');
+    if(i===index&&i!==correct)btn.classList.add('wrong');
   });
 
-  const feedbackArea = document.getElementById('feedbackArea');
-
-  if (index === correct) {
+  const fb=document.getElementById('feedbackArea');
+  if(index===correct){
     score++;
-    feedbackArea.innerHTML = `<div class="feedback correct">✅ Correct!</div>`;
+    fb.innerHTML='<div class="feedback correct">✅ Correct!</div>';
   } else {
     wrongAnswers.push(q);
-    feedbackArea.innerHTML = `<div class="feedback wrong">❌ Wrong<br><span class="correct-answer">Correct: ${q.correctAnswer}</span></div>`;
+    fb.innerHTML=`<div class="feedback wrong">❌ Wrong<span class="fb-detail">Correct answer: ${q.correctAnswer}</span></div>`;
   }
+  document.getElementById('quizScore').textContent=`✓ ${score}`;
 
-  document.getElementById('quizScore').textContent = `✓ ${score}`;
-
-  // Auto-advance after delay
-  setTimeout(() => {
-    currentIndex++;
-    renderQuestion();
-  }, 1500);
+  setTimeout(()=>{currentIndex++;renderQuestion();},1400);
 }
 
-// ===== RESULTS =====
+// ============================================================
+//  RESULTS
+// ============================================================
 function showResults() {
-  document.getElementById('quizArea').style.display = 'none';
-  document.getElementById('resultsArea').style.display = 'block';
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('resultsArea').style.display='block';
 
-  const total = currentQuiz.length;
-  const pct = Math.round((score / total) * 100);
+  const total=currentQuiz.length;
+  const pct=Math.round((score/total)*100);
 
-  const scoreEl = document.getElementById('resultsScore');
-  scoreEl.textContent = pct + '%';
-  scoreEl.className = 'results-score ' + (pct >= 80 ? 'great' : pct >= 50 ? 'ok' : 'bad');
+  const emoji=document.getElementById('resultsEmoji');
+  if(pct===100)emoji.textContent='🏆';
+  else if(pct>=80)emoji.textContent='🌟';
+  else if(pct>=50)emoji.textContent='💪';
+  else emoji.textContent='📚';
 
-  document.getElementById('resultsDetail').textContent = `${score} out of ${total} correct`;
+  const scoreEl=document.getElementById('resultsScore');
+  scoreEl.textContent=pct+'%';
+  scoreEl.className='results-score '+(pct>=80?'great':pct>=50?'ok':'bad');
 
-  const barFill = document.getElementById('resultsBarFill');
-  barFill.style.width = '0%';
-  barFill.style.background = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--orange)' : 'var(--red)';
-  setTimeout(() => { barFill.style.width = pct + '%'; }, 100);
+  document.getElementById('resultsDetail').textContent=`${score} out of ${total} correct`;
 
-  // Wrong answers review
-  const wrongEl = document.getElementById('wrongAnswers');
-  if (wrongAnswers.length > 0) {
-    wrongEl.innerHTML = `<h4>❌ Review (${wrongAnswers.length} wrong)</h4>`;
-    wrongAnswers.forEach(q => {
-      wrongEl.innerHTML += `
-        <div class="wrong-item">
-          <div class="wi-char">${q.radical.char}</div>
-          <div class="wi-info">
-            <span class="wi-pinyin">${q.radical.pinyin}</span> —
-            <span class="wi-meaning">${q.radical.meaning}</span>
-          </div>
-        </div>
-      `;
+  const bar=document.getElementById('resultsBarFill');
+  bar.style.width='0%';
+  bar.style.background=pct>=80?'var(--green)':pct>=50?'var(--orange)':'var(--red)';
+  setTimeout(()=>{bar.style.width=pct+'%';},100);
+
+  const wrongEl=document.getElementById('wrongAnswers');
+  if(wrongAnswers.length>0){
+    wrongEl.innerHTML=`<h4>❌ Review (${wrongAnswers.length} wrong)</h4>`;
+    wrongAnswers.forEach(q=>{
+      const item=q.item;
+      wrongEl.innerHTML+=`<div class="wrong-item"><div class="wi-char">${item.c}</div><div class="wi-info"><span class="wi-pinyin">${item.p}</span> — <span class="wi-meaning">${item.m}</span></div></div>`;
     });
   } else {
-    wrongEl.innerHTML = '<div style="color:var(--green); margin-top:16px;">🎉 Perfect score! All correct!</div>';
+    wrongEl.innerHTML='<div style="color:var(--green);margin-top:16px;font-size:1.05rem;">🎉 Perfect score! All correct!</div>';
   }
 }
 
-// ===== NAV =====
+// ============================================================
+//  NAV
+// ============================================================
 function newQuiz() {
-  if (selectedSections.length === 1) {
-    startSectionQuiz(selectedSections[0]);
-  } else {
-    const from = Math.min(...selectedSections);
-    const to = Math.max(...selectedSections);
-    const ids = [];
-    for (let i = from; i <= to; i++) ids.push(i);
-    currentQuiz = generateQuiz(ids);
-    currentIndex = 0;
-    score = 0;
-    wrongAnswers = [];
-    showQuiz(`Sections ${from}–${to}`);
-  }
+  // Re-generate with same settings but fresh random data
+  if(selectedSections.length===0){backToMenu();return;}
+  const mode=selectedMode;
+  const sections=mode==='radicals'?RADICALS:WORDS;
+
+  currentQuiz=generateQuiz(selectedSections,mode);
+  quizSession=[currentQuiz];
+  for(let i=1;i<quizCount;i++){quizSession.push(generateQuiz(selectedSections,mode));}
+  currentQuiz=quizSession.flat();
+  currentIndex=0;score=0;wrongAnswers=[];
+  document.getElementById('resultsArea').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  renderQuestion();
 }
 
 function backToMenu() {
-  document.getElementById('menuScreen').style.display = 'block';
-  document.getElementById('quizArea').style.display = 'none';
-  document.getElementById('resultsArea').style.display = 'none';
+  document.getElementById('menuScreen').style.display='block';
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('resultsArea').style.display='none';
 }
 
-// ===== BOOT =====
+// ============================================================
+//  BOOT
+// ============================================================
 initMenu();
 </script>
 </body>
